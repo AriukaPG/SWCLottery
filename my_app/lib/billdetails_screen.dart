@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'wallet_screen.dart';
+import 'lottery_info.dart';
 
-double price=0;
+int price=0;
 double fee=0;
 double total=0;
 String paymentMethod='';
-
+int unit=0;
 class BillDetailsScreen extends StatefulWidget {
 
   const BillDetailsScreen({Key? key}) : super(key: key);
@@ -17,17 +17,40 @@ class BillDetailsScreen extends StatefulWidget {
 }
 
 class _BillDetailsScreenState extends State<BillDetailsScreen>{
+  @override
+  void initState() {
+    super.initState();
+
+    // Add a listener to the text field controller to update total when the text changes
+    _unitController.addListener(_updateTotal);
+  }
+
+
+  TextEditingController _unitController = TextEditingController();
   bool showDefaultListTiles = true;
   bool button1=true;
   int selectedOption=1;
 
+  void _updateTotal() {
+    setState(() {
+      int l1 = int.tryParse(_unitController.text) ?? 0;
+      price = lotteryPrice*l1;
+      fee = price * 0.1;
+      total = fee + price;
+      unit=l1;
+    });
+  }
   @override
   Widget build(BuildContext context){
-    price = amount;
+    /*price = lotteryPrice;
     fee=price*0.1;
     total=fee+price;
+    if(_unitController.text!=0){
+      _updateTotal();
+    }*/
     return Scaffold(
-      body: Column(
+      body: SingleChildScrollView(child:
+      Column(
         children: [
 
           Stack(
@@ -43,7 +66,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                         color: Colors.white,
                         size: 30,
                       ),
-                      onTap: () => Navigator.pushNamed(context, '/wallet'),
+                      onTap: () => Navigator.pushNamed(context, '/lottery'),
 
                     )
                   ],
@@ -69,7 +92,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                     padding: EdgeInsets.symmetric(horizontal: 0),
                     child: Container(
                       width: 420, // Adjust the size as needed
-                      height: 126, // Set the same value as the width
+                      height: 120, // Set the same value as the width
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(30),
@@ -80,9 +103,9 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(30, 200, 0, 0),
+                padding: const EdgeInsets.fromLTRB(30, 180, 0, 0),
                 child: ListTile(
-                    title: Text(title,
+                    title: Text(lotteryName,
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
                     subtitle: Text(date),
                     leading: Container(
@@ -100,6 +123,38 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
               ),
             ],
           ),
+        InkWell(
+                  onTap: (){
+                    setState(() {
+                      /*int l1=int.parse(_unitController.text);
+                      print(l1);
+                        price=price*l1;
+                      fee=price*0.1;
+                      total=fee+price;*/
+                      //_BillDetailsScreenState();
+                    });
+                  },
+                  child:Container(
+                    width: 350,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      border: Border.all(color:Color(0xffDDDDDD)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      child: TextField(
+                        controller: _unitController,
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15),
+                        decoration: InputDecoration(border: InputBorder.none,
+                            hintText: 'Та хэдэн ширхэг сугалаа авах вэ?'),),
+                    ),
+
+                  )
+              ),
+
          Column(
            mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -163,7 +218,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                   child: Center(
                     child: ListTile(
                       title: Text('Дебит карт', style: TextStyle(
-                          color:  selectedOption==1?Color(0xff438883):Color(0xff888888),fontWeight: FontWeight.bold
+                          color:  selectedOption==1?Color(0xffF58742):Color(0xff888888),fontWeight: FontWeight.bold
                       ),),
                       leading: Container(
                           width: 60,
@@ -172,13 +227,13 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                             shape: BoxShape.circle,
                             color: Colors.white,
                           ),
-                          child: Icon(Icons.credit_card, color: selectedOption==1?Color(0xff438883):Color(0xff888888),)
+                          child: Icon(Icons.credit_card, color: selectedOption==1?Color(0xffF58742):Color(0xff888888),)
                       ),
                       trailing:Radio<int>(
                         value: 1,
                         groupValue: selectedOption,
-                        activeColor: selectedOption==1?Color(0xff438883):Color(0xff888888), // Change the active radio button color here
-                        fillColor: MaterialStateProperty.all(selectedOption==1?Color(0xff438883):Color(0xff888888)),
+                        activeColor: selectedOption==1?Color(0xffF58742):Color(0xff888888), // Change the active radio button color here
+                        fillColor: MaterialStateProperty.all(selectedOption==1?Color(0xffF58742):Color(0xff888888)),
                         splashRadius: 20, // Change the splash radius when clicked
                         onChanged: (int? value) {
                           setState(() {
@@ -204,7 +259,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                   child: Center(
                     child: ListTile(
                       title: Text('Paypal', style: TextStyle(
-                          color: selectedOption==2?Color(0xff438883):Color(0xff888888),fontWeight: FontWeight.bold
+                          color: selectedOption==2?Color(0xffF58742):Color(0xff888888),fontWeight: FontWeight.bold
                       ),),
                       leading: Container(
                           width: 60,
@@ -213,13 +268,13 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                             shape: BoxShape.circle,
                             color: Colors.white,
                           ),
-                          child: Icon(Icons.paypal, color:selectedOption==2?Color(0xff438883):Color(0xff888888) ,)
+                          child: Icon(Icons.paypal, color:selectedOption==2?Color(0xffF58742):Color(0xff888888) ,)
                       ),
                       trailing:Radio<int>(
                         value: 2,
                         groupValue: selectedOption,
-                        activeColor: selectedOption==2?Color(0xff438883):Color(0xff888888), // Change the active radio button color here
-                        fillColor: MaterialStateProperty.all(selectedOption==2?Color(0xff438883):Color(0xff888888)), // Change the fill color when selected
+                        activeColor: selectedOption==2?Color(0xffF58742):Color(0xff888888), // Change the active radio button color here
+                        fillColor: MaterialStateProperty.all(selectedOption==2?Color(0xffF58742):Color(0xff888888)), // Change the fill color when selected
                         splashRadius: 20, // Change the splash radius when clicked
                         onChanged: (int? value) {
                           setState(() {
@@ -232,7 +287,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                     ),
                   )
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               InkWell(
                 onTap: () {
                   if (selectedOption == 1) {
@@ -252,11 +307,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                   width: 300,
                   height: 50,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors:  <Color>[Color(0xff63b4ae), Color(0xff438883)],
-                    ),
+                    color: Color(0xffF58742),
                     borderRadius: BorderRadius.circular(30),
 
                   ),
@@ -279,6 +330,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
 
 
 
+      ),
       ),
 
       bottomNavigationBar: BottomAppBar(

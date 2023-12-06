@@ -71,30 +71,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/people.png
-    - assets/images/circle.png
-    - assets/images/image1.png
-    - assets/images/image2.png
-    - assets/images/hee.png
-    - assets/images/upwork.png
-    - assets/images/woman.png
-    - assets/images/youtube.png
-    - assets/images/paypal.png
-    - assets/images/Ellipse6.png
-    - assets/images/home.png
-    - assets/images/images7.png
-    - assets/images/image8.png
-    - assets/images/images9.png
-    - assets/images/images10.png
-    - assets/images/image11.png
-    - assets/images/frame21.png
-    - assets/images/frame22.png
-    - assets/images/frame23.png
-    - assets/images/lightning.png
-    - assets/images/house.png
-    - assets/images/spotify.png
-    - assets/images/bank.png
-    - assets/images/netflix.png
+    - assets/images/
 
   #   - images/a_dot_ham.jpeg
 

@@ -12,9 +12,10 @@ class SplashScreen extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: <Color>[Color(0xff63b4ae), Color(0xff438883)]
+            colors: <Color>[Color(0xffF58742), Color(0xffFFD000)]
             , // Set your gradient colors
           ),
+          //color: Color(0xffF58742)
         ),
         child:Center(
           child:  const Text("Сайн уу?",

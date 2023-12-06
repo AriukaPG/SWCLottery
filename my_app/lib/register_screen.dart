@@ -25,16 +25,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     child:Column( children: [
         Stack(children: [
           Image.asset('assets/images/image2.png'),
-          Positioned(
-              top: -73,
-              left: -78,
-              child: new Image.asset('assets/images/circle.png',
-                  width: 230,
-                  height: 230,
-                  //height: 200.0,
-                  //fit: BoxFit.cover
-              )
-          ),
           Positioned.fill(child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -48,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: 20),
               Text(
-                "Орлого, зарлагаа хянахад тань туслана",
+                "Сугалаа худалдаж авахад тань туслана",
                 style: TextStyle(
                   color: Colors.white,
 
@@ -222,7 +212,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           width: 310,
           height: 53,
           decoration: BoxDecoration(
-            color: Color(0xff3E7C78),
+            color: Color(0xffF58742),
             borderRadius: BorderRadius.circular(30),
 
           ),
@@ -250,7 +240,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   MaterialPageRoute(builder: (context) =>
                       LoginScreen()/*context, "/login"*/),);
               },
-              child: new Text("Нэвтрэх", style: TextStyle(color: Color(0xff32819a))),
+              child: new Text("Нэвтрэх", style: TextStyle(color: Color(0xffF58742))),
             ),
 
           ],

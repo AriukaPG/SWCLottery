@@ -62,7 +62,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
                       height: 35,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color:Color(0xff408E88)
+                          color:Color(0xfff69457)
                       ),
                       child: Icon(Icons.notifications_none,
                         color: Colors.white,
@@ -207,7 +207,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: <Color>[Color(0xff63b4ae), Color(0xff438883)],
+                  colors: <Color>[Color(0xfff69457), Color(0xfff69457)],
                 ),
               ), // Callback for anytime credit card brand is changed
             ),),
@@ -638,7 +638,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
                     height: 50,
                     decoration: BoxDecoration(
                      border: Border.all(
-                       color: Color(0xff519792)
+                       color: Color(0xfff69457)
                      ),
                       borderRadius: BorderRadius.circular(30),
 
@@ -647,7 +647,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
                       child: Text(
                         'Дараах',
                         style: TextStyle(
-                          color: Color(0xff519792),
+                          color: Color(0xfff69457),
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),

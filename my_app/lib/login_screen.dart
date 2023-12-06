@@ -59,15 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
             Stack(
               children: [
                 Image.asset('assets/images/image2.png'),
-                Positioned(
-                  top: -73,
-                  left: -78,
-                  child: Image.asset(
-                    'assets/images/circle.png',
-                    width: 230,
-                    height: 230,
-                  ),
-                ),
                 Positioned.fill(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -157,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: 310,
               height: 53,
               decoration: BoxDecoration(
-                color: Color(0xff3E7C78),
+                color: Color(0xffF58742),
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Center(
@@ -190,22 +181,14 @@ class _LoginScreenState extends State<LoginScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                SizedBox(width: 50),
                 InkWell(
                   onTap: () {
                     Navigator.pushNamed(context, "/register");
                   },
                   child: Text(
                     "Бүртгүүлэх",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, "/register");
-                  },
-                  child: Text(
-                    "Бүртгүүлэх",
-                    style: TextStyle(color: Color(0xff32819a)),
+                    style: TextStyle(color: Color(0xffF58742)),
                   ),
                 ),
               ],

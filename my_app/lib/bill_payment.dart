@@ -1,8 +1,13 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:my_app/home_screen.dart';
 import 'billdetails_screen.dart';
-import 'wallet_screen.dart';
+import 'lottery_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+int length=0;
+Random random=Random();
+int randomIndex=0;
+int randomTicketNumber=0;
 class BillPaymentScreen extends StatefulWidget {
 
   const BillPaymentScreen({Key? key}) : super(key: key);
@@ -12,20 +17,68 @@ class BillPaymentScreen extends StatefulWidget {
 
 }
 class _BillPaymentScreenState extends State<BillPaymentScreen>{
+  //int randomIndex=random.nextInt(length);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   bool showDefaultListTiles = true;
   bool button1=true;
   int selectedOption=1;
-  String desc='';
+  Future<void> getTicketNumbersLength() async {
+   for(int i=0;i<unit;i++) {
+     try {
+       DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection(
+           'lotteries').doc(lotteryId).get();
+       if (snapshot.exists) {
+         Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+
+         if (data.containsKey('ticketNumbers') &&
+             data['ticketNumbers'] is List) {
+           List<dynamic> ticketNumbers = data['ticketNumbers'];
+           length = ticketNumbers.length - 1;
+           print(length);
+           randomIndex = random.nextInt(length);
+           print(randomIndex);
+           if (randomIndex >= 0 && randomIndex < ticketNumbers.length) {
+             randomTicketNumber = ticketNumbers[randomIndex];
+             print(randomTicketNumber);
+             String stringTotal= randomTicketNumber.toString();
+             DocumentReference ticketRef = await db.collection('tickets').add({
+               'userId': user,
+               'lotteryId': lotteryId,
+                'lotteryName': lotteryName
+             });
+             await ticketRef.update({
+               'buyedTickets': FieldValue.arrayUnion([stringTotal]),
+             });
+             await db.collection('lotteries').doc(lotteryId).update({
+               'ticketNumbers': FieldValue.arrayRemove([randomTicketNumber]),
+             });
+           } else {
+             // Index out of bounds
+
+           }
+           //print(randomIndex);
+         } else {
+           // 'ticketNumbers' field not found or is not a List
+         }
+       } else {
+         // Document not found
+
+       }
+     } catch (e) {
+       print('Error fetching document data: $e');
+       // Return 0 in case of an error
+     }
+   }
+  }
 
 
   @override
   Widget build(BuildContext context){
-   if(title=='Youtube'){
-      desc='Youtube Premium\nfor one month with BCA OneKlik';
-    }
-   else{
-     desc=title;
-   }
     return Scaffold(
       body: Column(
         children: [
@@ -79,25 +132,17 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
                   ),
                 ],
               ),
-             if(title!='Youtube')
              Positioned(top: 200,
-                 left: 140,
+                 left: 90,
                  child: Column(children: [
 
                      Image.asset(image),
                  SizedBox(height: 12),
-                 Text('You will pay $desc',
+                 Text('   Та $lotteryName сугалаанаас\n$unit ширхэг сугалаа авах гэж байна.',
                    style: TextStyle(fontSize: 16),)
                  ],),
              )
-              else
-                Positioned(top: 200,
-                left: 180,
-                child:Image.asset(image)),
-                Positioned(top: 265,
-                  left: 100,
-                  child: Text('You will pay $desc',
-                  style: TextStyle(fontSize: 16),)),
+
             ],
           ),
           Column(
@@ -152,6 +197,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
               InkWell(
                 onTap: () async{
                   try {
+                    getTicketNumbersLength();
                     DateTime now = DateTime.now();
                     Timestamp timestamp = Timestamp.fromDate(now);
                     String stringTotal= total.toString();
@@ -160,17 +206,18 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
                       'type': 'expense',
                       'amount': stringTotal,
                       'date': timestamp,
-                      'title': title,
+                      'title': lotteryName,
                     });
                     String transactionId = transactionRef.id;
                    // DateTime transactionDate = transactionRef.;
-                    try {
+                    /*try {
                       await db.collection('upcomingBills').doc(billId).delete();
                       print('Document deleted successfully');
                     } catch (error) {
                       print('Error deleting document: $error');
                     }
-                    print('Transaction added to Firestore successfully!');
+                    print('Transaction added to Firestore successfully!');*/
+
                     Navigator.pushNamed(
                         context,"/wallet/billDetails/billPayment/confirm",
                   arguments: {'transactionId': transactionId,
@@ -190,7 +237,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors:  <Color>[Color(0xff63b4ae), Color(0xff438883)],
+                      colors:  <Color>[Color(0xffF58742), Color(0xffF58742)],
                     ),
                     borderRadius: BorderRadius.circular(30),
 
@@ -241,7 +288,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
             IconButton(
               icon: Icon(Icons.wallet_outlined,
                   size: 30,
-                  color: Color(0xff3e7c78)),
+                  color: Color(0xffF58742)),
               onPressed: () {
                 print('Circular button pressed!');
               },

@@ -3,8 +3,8 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_app/home_screen.dart';
+import 'package:my_app/lottery_info.dart';
 import 'billdetails_screen.dart';
-import 'wallet_screen.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 String randomString ='';
@@ -60,7 +60,7 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
                 ),
               ),
               const Positioned(top: 95,
-                left: 150,child: Text("Bill Payment",
+                left: 150,child: Text("Төлбөр төлөх",
                   style: TextStyle(color: Colors.white,
                       fontSize: 20),),
               ),
@@ -96,11 +96,11 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Амжилттай төлөгдлөө",
-                  style: TextStyle(fontSize: 21, color: Color(0xff438883),
+                  style: TextStyle(fontSize: 21, color: Color(0xffF58742),
                       fontWeight: FontWeight.bold),),
-                  Text('$title',style: TextStyle(fontSize: 15),),
+                  Text('$lotteryName',style: TextStyle(fontSize: 15),),
                   SizedBox(height: 10),
-                  Icon(Icons.check_circle, size: 30, color: Color(0xff438883),),
+                  Icon(Icons.check_circle, size: 30, color: Color(0xffF58742),),
                   //SizedBox(height: 20),
                 ]
                     ,)),
@@ -140,7 +140,7 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
                   color: Color(0xff666666)
               ),),
               SizedBox(width: 233),
-              Text("Хийгдсэн", style: TextStyle(fontSize: 16, color: Color(0xff438883)),)
+              Text("Хийгдсэн", style: TextStyle(fontSize: 16, color: Color(0xffF58742)),)
             ],),
           ),
           SizedBox(height: 12),
@@ -177,7 +177,7 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
               SizedBox(width: 5),
               Text("$transactionId", style: TextStyle(fontSize: 16),),
               IconButton(
-                icon: Icon(Icons.copy, color: Color(0xff438883)),
+                icon: Icon(Icons.copy, color: Color(0xffF58742)),
                 onPressed: () {
                   FlutterClipboard.copy(transactionId)
                       .then((_) => ScaffoldMessenger.of(context).showSnackBar(
@@ -245,8 +245,8 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
               SizedBox(height: 10),
               InkWell(
                 onTap: () {
-                  /*Navigator.pushNamed(
-                        context,"/register");
+                  Navigator.pushNamed(
+                        context,'/wallet/billDetails/billPayment/confirm/seeTicket');
                     //MaterialPageRoute(builder: (context) => RegisterScreen()),
                     //);*/
                 },
@@ -255,16 +255,16 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
                   height: 50,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Color(0xff519792)
+                        color: Color(0xffF58742)
                     ),
                     borderRadius: BorderRadius.circular(30),
 
                   ),
                   child: Center(
                     child: Text(
-                      'Share receipt',
+                      'Сугалааны дугаар харах',
                       style: TextStyle(
-                        color: Color(0xff519792),
+                        color: Color(0xffF58742),
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),

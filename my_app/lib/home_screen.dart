@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_app/firebase_options.dart';
 import 'package:intl/intl.dart';
+late DocumentSnapshot userSnapshot;
 double balance=0;
 double totalIncome=0;
 double totalExpense=0;
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _fetchUserData() async {
     if (_user != null) {
       try {
-        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+        userSnapshot = await FirebaseFirestore.instance
             .collection('users')
             .doc(_user!.uid)
             .get();
@@ -172,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 35,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                        color:Color(0xff408E88)
+                        color:Color(0xfff69457)
                   ),
                     child: Icon(Icons.notifications_none,
                     color: Colors.white,
@@ -193,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 400, // Adjust the size as needed
                   height: 190, // Set the same value as the width
                   decoration: BoxDecoration(
-                      color: Color(0xff3E7C78),
+                      color: Color(0xfff69457),
                       borderRadius: BorderRadius.circular(20),
                     ),
                 // Change the color as desired
@@ -238,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 25,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Color(0xff4E918D),
+                        color: Color(0xffF58742),
                       ),
                       child: Center(
                         child: Icon(Icons.arrow_downward, color:Colors.white, size:15,)
@@ -269,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 25,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Color(0xff4E918D),
+                        color: Color(0xffF58742),
                       ),
                       child: Center(
                           child: Icon(Icons.arrow_upward, color:Colors.white, size:15,)
@@ -477,16 +478,18 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Icon(Icons.home_filled,
               color: //_selectedIndex == 0
-                   Color(0xff3e7c78)
+                   Color(0xffF58742)
                   //: Colors.grey
                   ,
                 size: 30,),
                 onPressed: () => _onItemTapped(0),
               ),
               IconButton(
-                icon: Icon(Icons.bar_chart,
+                icon: Icon(Icons.local_activity_outlined,
                     size: 30),
-                onPressed: () => _onItemTapped(1),
+                onPressed: (){
+                  Navigator.pushNamed(context, '/lottery');
+                },
               ),
               SizedBox(),
               IconButton(
@@ -516,10 +519,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 "/wallet/add");
           },
           child: Icon(Icons.add),
-          backgroundColor: Color(0xff3e7c78)
+          backgroundColor: Color(0xffF58742)
           ,
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked
+
     );
   }
 }
@@ -555,10 +559,13 @@ class TransactionData {
         break;
       case 'Youtube':
         icon = 'assets/images/youtube.png';
+        break;
       case 'Spotify':
         icon = 'assets/images/spotify.png';
+        break;
       case 'House Rent':
         icon = 'assets/images/house.png';
+        break;
       case 'Netflix':
         icon = 'assets/images/netflix.png';
         break;
