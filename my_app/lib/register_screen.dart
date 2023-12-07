@@ -1,33 +1,35 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _RegisterScreenState createState() => _RegisterScreenState();
 }
+
 class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-
+  
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: Color(0xfff0f0f0),
+      backgroundColor: const Color(0xfff0f0f0),
       body:SingleChildScrollView(
     child:Column( children: [
         Stack(children: [
           Image.asset('assets/images/image2.png'),
           Positioned.fill(child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Text(
                 "Тавтай морилно уу?",
                 style: TextStyle(
@@ -41,16 +43,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 "Сугалаа худалдаж авахад тань туслана",
                 style: TextStyle(
                   color: Colors.white,
-
                   fontSize: 15,
                 ),
               ),
             ],
-          ),
-          ),
-        ],
-        ),
-        SizedBox(height: 50),
+          ),),
+        ],),
+      const SizedBox(height: 50),
         Container(
           width: 310,
           height: 53,
@@ -61,24 +60,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Center(
             child: TextField(
               controller: _nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   contentPadding:
                   EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
                 border: InputBorder.none,
                 hintText: 'Бүтэн нэрээ оруулна уу?'
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 15,
-
               ),
             ),
-
           ),
-
-        ),
-        SizedBox(height: 20),
-        Container(
+        ), 
+      const SizedBox(height: 20), 
+      Container(
           width: 310,
           height: 53,
           decoration: BoxDecoration(
@@ -87,25 +83,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           child: Center(
             child: TextField(
-         controller: _emailController,
-              decoration: InputDecoration(
+              controller: _emailController,
+              decoration: const InputDecoration(
                   contentPadding:
                   EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
                   border: InputBorder.none,
                   hintText: 'Имэйлээ оруулна уу?'
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 15,
-
               ),
             ),
-
           ),
-
-        ),
-        SizedBox(height: 20),
-        Container(
+        ), 
+      const SizedBox(height: 20), 
+      Container(
           width: 310,
           height: 53,
           decoration: BoxDecoration(
@@ -115,24 +108,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Center(
             child: TextField(
               controller: _passwordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   contentPadding:
                   EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
                   border: InputBorder.none,
                   hintText: 'Нууц үгээ оруулаарай'
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 15,
-
               ),
             ),
-
           ),
-
         ),
-        SizedBox(height: 20),
-        Container(
+      const SizedBox(height: 20), 
+      Container(
           width: 310,
           height: 53,
           decoration: BoxDecoration(
@@ -142,42 +132,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Center(
             child: TextField(
               controller: _confirmPasswordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   contentPadding:
                   EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
                   border: InputBorder.none,
                   hintText: 'Нууц үгээ давтан оруулаарай'
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 15,
-
               ),
             ),
-
           ),
-
         ),
-        SizedBox(height: 40),
-        InkWell(
+      const SizedBox(height: 40), 
+      InkWell(
           onTap: () async {
-            // Access the text from controllers whenever needed
-
             if (_passwordController.text == _confirmPasswordController.text) {
               try {
-                // Create user with email and password
                 UserCredential userCredential =
                 await _auth.createUserWithEmailAndPassword(
                   email: _emailController.text.trim(),
                   password: _passwordController.text,
                 );
-
-                // Update display name
+                
                 await userCredential.user!.updateDisplayName(
                   _nameController.text,
                 );
 
-                // Add user details to Firestore
                 await FirebaseFirestore.instance
                     .collection('users')
                     .doc(userCredential.user!.uid)
@@ -186,37 +168,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   'displayName': _nameController.text,
                   'email': _emailController.text.trim(),
                 });
-                print("Created New Account");
+                // ignore: use_build_context_synchronously
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text("Амжилттай бүртгэгдлээ.\nНэвтрэх дээр дарж нэвтэрнэ үү."),
                     duration: Duration(seconds: 3),
                   ),
                 );
               } catch (error) {
-                print("Error: $error");
+                if (kDebugMode) {
+                  print("Error: $error");
+                }
               }
             } else {
-
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
+                const SnackBar(
                   content: Text("Нууц үг таарахгүй байна."),
                   duration: Duration(seconds: 3),
                 ),
               );
             }
-          },
-      child:
-
-    Container(
+          }, 
+        child: 
+        Container(
           width: 310,
           height: 53,
           decoration: BoxDecoration(
-            color: Color(0xffF58742),
+            color: const Color(0xffF58742),
             borderRadius: BorderRadius.circular(30),
-
           ),
-          child: Center(
+          child: const Center(
             child: Text(
               'Бүртгүүлэх',
               style: TextStyle(
@@ -225,50 +206,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 fontSize: 20,
               ),
             ),
-
           ),
         ),
-        ),
-        SizedBox(height: 30),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text('Хэрэглэгчийн Эрх бий юу?'
-              ),
-            InkWell(
-              onTap: () {
-                Navigator.push(context,
-                  MaterialPageRoute(builder: (context) =>
-                      LoginScreen()/*context, "/login"*/),);
+      ),
+      const SizedBox(height: 30),
+      Row(mainAxisAlignment: MainAxisAlignment.spaceAround, 
+        children: [
+          const Text('Хэрэглэгчийн Эрх бий юу?'), 
+          InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),);
               },
-              child: new Text("Нэвтрэх", style: TextStyle(color: Color(0xffF58742))),
-            ),
-
-          ],
-        ),
-        /*
-        TextField(
-          decoration: InputDecoration(
-          labelText: 'Enter text',
-          border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-    ),
-        filled: true,
-        fillColor: Colors.grey[200],
-    ),
-              ),*/
-        ],),
-    ),
-    );
-
-
-        /*ClipOval(
-          child: Container(
-            width: 150,
-            height: 150,
-            color:  Color(0xffACF0FF),
-            padding: EdgeInsets.fromLTRB(0,8,500,0),
-              ),
-            ),*/
-
+              child: const Text("Нэвтрэх", style: TextStyle(color: Color(0xffF58742))),
+          ),
+        ],
+      ),
+    ],),),);
   }
 }
