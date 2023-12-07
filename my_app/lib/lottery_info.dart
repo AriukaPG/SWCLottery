@@ -1,30 +1,32 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+
 List<LotteryData> lotteries = [];
 String lotteryName='';
 int lotteryPrice=0;
 String image='';
 String lotteryId='';
+// ignore: prefer_typing_uninitialized_variables
 var date;
+
 class LotteryScreen extends StatefulWidget {
 
   const LotteryScreen({Key? key}) : super(key: key);
 
   @override
   State<LotteryScreen> createState() => _LotteryScreenState();
-
 }
+
 class _LotteryScreenState extends State<LotteryScreen>{
 @override
   void initState() {
     super.initState();
     _fetchLotteries();
   }
-Future<void> _fetchLotteries() async {
 
+Future<void> _fetchLotteries() async {
     try {
       QuerySnapshot<Map<String, dynamic>> lotteriesSnapshot =
       await FirebaseFirestore.instance
@@ -32,17 +34,16 @@ Future<void> _fetchLotteries() async {
           .orderBy('date', descending: true)
           .limit(2)
           .get();
-
       lotteries = lotteriesSnapshot.docs
           .map((doc) => LotteryData.fromMap(doc.data(),doc.id))
           .toList();
-
-      //setState(() {});
     } catch (error) {
-      print('Error fetching lottery: $error');
+      if (kDebugMode) {
+        print('Error fetching lottery: $error');
+      }
     }
-
 }
+
   @override
   Widget build(BuildContext context){
   _fetchLotteries();
@@ -59,7 +60,7 @@ Future<void> _fetchLotteries() async {
                   child: Row(
                     children: [
                       InkWell(
-                        child: Icon(Icons.chevron_left,
+                        child: const Icon(Icons.chevron_left,
                           color: Colors.white,
                           size: 30,
                         ),
@@ -75,29 +76,29 @@ Future<void> _fetchLotteries() async {
                       height: 35,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color:Color(0xfff69457)
+                          color:const Color(0xfff69457)
                       ),
-                      child: Icon(Icons.notifications_none,
+                      child: const Icon(Icons.notifications_none,
                         color: Colors.white,
                         size: 25,
                       ),
-
                     )),
                 Positioned(top: 99,
                   right: 33,
                   child: Image.asset('assets/images/Ellipse6.png', width: 7,height: 7,),
                 ),
-                Positioned(child: Text("Сугалааны мэдээлэл",
-                  style: TextStyle(color: Colors.white,
-                      fontSize: 20),),
+                const Positioned(
                   top: 95,
                   left: 110,
+                  child: Text("Сугалааны мэдээлэл",
+                  style: TextStyle(color: Colors.white, 
+                      fontSize: 20),),
                 ),
                 Column(
                   children: [
-                    SizedBox(height: 160,),
+                    const SizedBox(height: 160,),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 0),
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
                       child: Container(
                         width: 415, // Adjust the size as needed
                         height: 127, // Set the same value as the width
@@ -105,11 +106,9 @@ Future<void> _fetchLotteries() async {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        // Change the color as desired
                       ),
                     ),
                   ],
-
                 ),
                 Positioned(left: 45,
                   top:190,
@@ -118,18 +117,17 @@ Future<void> _fetchLotteries() async {
                     width: 315,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: Color(0xffF4F6F6),
+                      color: const Color(0xffF4F6F6),
                       borderRadius: BorderRadius.circular(30)
-
                     ),
-                    child: ListTile(
+                    child: const ListTile(
                       leading: Icon(Icons.search),
                       title: Text("Search", style: TextStyle(color:Color(0xff666666)),),
                     ),
                   ),
                 ),
-                ],
-              ),
+              ],
+            ),
             for(var lottery in lotteries)
               Column(
                 children: [
@@ -137,28 +135,27 @@ Future<void> _fetchLotteries() async {
                     width: 350,
                     height: 250,
                     decoration: BoxDecoration(
-                      color: Color(0xffF6F6F6),
+                      color: const Color(0xffF6F6F6),
                       borderRadius: BorderRadius.circular(30)
                     ),
                     child: Column(
                       children: [
-                    SizedBox(height: 5),
-                    ListTile(
-                      title: Text(lottery.name, style:
-                      TextStyle(color: Colors.black,
-                          fontWeight: FontWeight.bold)),
-                      subtitle: Text(_formatDate(lottery.date), style:
-                      TextStyle(
-                          color: Colors.black
-                      )),
-                      leading: Image.asset(lottery.image),
-                      trailing: Text(lottery.price.toString()),
-                      ),
-
+                        const SizedBox(height: 5), 
+                        ListTile(
+                          title: Text(lottery.name, style:
+                          const TextStyle(color: Colors.black, 
+                              fontWeight: FontWeight.bold)), 
+                          subtitle: Text(_formatDate(lottery.date), style:
+                          const TextStyle(
+                              color: Colors.black
+                          )), 
+                          leading: Image.asset(lottery.image), 
+                          trailing: Text(lottery.price.toString()),
+                        ), 
                         ListTile(
                           title: Text(lottery.desc),
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         InkWell(
                           onTap: () {
                             lotteryName=lottery.name;
@@ -168,17 +165,15 @@ Future<void> _fetchLotteries() async {
                             lotteryId=lottery.id;
                             Navigator.pushNamed(
                               context,"/wallet/billDetails");
-                          //MaterialPageRoute(builder: (context) => RegisterScreen()),
-                          //);*/
                           },
                           child: Container(
                             width: 300,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: Color(0xffF58742),
+                              color: const Color(0xffF58742),
                               borderRadius: BorderRadius.circular(30),
                               ),
-                            child: Center(
+                            child: const Center(
                               child: Text(
                                 'Худалдаж авах',
                                 style: TextStyle(
@@ -187,72 +182,53 @@ Future<void> _fetchLotteries() async {
                                   fontSize: 20,
                                 ),
                               ),
-
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
-                  SizedBox(height: 20)
+                  const SizedBox(height: 20)
                 ],
               )
-
-
           ],
         ),
       ),
-
-
-
+      
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.home_filled,
-                //color: //_selectedIndex == 0
-                // Colors.white
-                //: Colors.grey
-
-                size: 30,),
-              onPressed: () =>  Navigator.pushNamed(context,
-                  "/home"),
+              icon: const Icon(Icons.home_filled, 
+                size: 30,), 
+              onPressed: () =>  Navigator.pushNamed(context, "/home"),
             ),
             IconButton(
-              icon: Icon(Icons.local_activity_outlined,
+              icon: const Icon(Icons.local_activity_outlined,
+                size: 30, 
+                color: Color(0xffF58742),), 
+                onPressed: () {}
+            ),
+            IconButton(
+              icon: const Icon(Icons.wallet_outlined,
                   size: 30,
-              color: Color(0xffF58742),),
-              onPressed: () {
-
-              }
+              ),
+              onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.wallet_outlined,
-                  size: 30,
-                  ),
-              onPressed: () {
-                print('Circular button pressed!');
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.person
-                  ,
-                  size: 30),
-              onPressed: () {
-
-                print('Circular button pressed!');
-              },
+              icon: const Icon(Icons.person,
+                  size: 30), 
+              onPressed: () {},
             ),
           ],
         ),
       ),
-
     );
   }
 }
+
 class LotteryData {
   final String name;
   final DateTime date;
@@ -271,7 +247,6 @@ class LotteryData {
   });
 
   factory LotteryData.fromMap(Map<String, dynamic> data, String id) {
-    final String name = data['name'];
     final int price = data['ticketPrice'];
     final Timestamp timestamp = data['date'];
     String icon = 'icon';
