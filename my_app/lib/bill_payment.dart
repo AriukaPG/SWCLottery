@@ -1,29 +1,30 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/home_screen.dart';
 import 'billdetails_screen.dart';
 import 'lottery_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 int length=0;
 Random random=Random();
 int randomIndex=0;
 int randomTicketNumber=0;
-class BillPaymentScreen extends StatefulWidget {
 
+class BillPaymentScreen extends StatefulWidget {
   const BillPaymentScreen({Key? key}) : super(key: key);
 
   @override
   State<BillPaymentScreen> createState() => _BillPaymentScreenState();
-
 }
-class _BillPaymentScreenState extends State<BillPaymentScreen>{
-  //int randomIndex=random.nextInt(length);
 
+class _BillPaymentScreenState extends State<BillPaymentScreen>{
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   bool showDefaultListTiles = true;
   bool button1=true;
   int selectedOption=1;
@@ -39,12 +40,9 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
              data['ticketNumbers'] is List) {
            List<dynamic> ticketNumbers = data['ticketNumbers'];
            length = ticketNumbers.length - 1;
-           print(length);
            randomIndex = random.nextInt(length);
-           print(randomIndex);
            if (randomIndex >= 0 && randomIndex < ticketNumbers.length) {
              randomTicketNumber = ticketNumbers[randomIndex];
-             print(randomTicketNumber);
              String stringTotal= randomTicketNumber.toString();
              DocumentReference ticketRef = await db.collection('tickets').add({
                'userId': user,
@@ -57,32 +55,23 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
              await db.collection('lotteries').doc(lotteryId).update({
                'ticketNumbers': FieldValue.arrayRemove([randomTicketNumber]),
              });
-           } else {
-             // Index out of bounds
-
            }
-           //print(randomIndex);
-         } else {
-           // 'ticketNumbers' field not found or is not a List
          }
-       } else {
-         // Document not found
-
        }
-     } catch (e) {
-       print('Error fetching document data: $e');
-       // Return 0 in case of an error
+     }
+     catch (e) {
+       if (kDebugMode) {
+         print('Error fetching document data: $e');
+       }
      }
    }
   }
-
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       body: Column(
         children: [
-
           Stack(
             children: [
               Image.asset('assets/images/image2.png'),
@@ -97,7 +86,6 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
                         size: 30,
                       ),
                       onTap: () => Navigator.pushNamed(context, '/wallet/billDetails'),
-
                     )
                   ],
                 ),
@@ -107,27 +95,25 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
                   style: TextStyle(color: Colors.white,
                       fontSize: 20),),
               ),
-              Positioned(top: 96,
+              const Positioned(top: 96,
                 right: 24,
                 child:  Icon(Icons.more_horiz,
                   color: Colors.white,
                   size: 25,
                 ),
-
               ),
               Column(
                 children: [
-                  SizedBox(height: 160,),
+                  const SizedBox(height: 160,),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 0),
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
                     child: Container(
-                      width: 420, // Adjust the size as needed
-                      height: 160, // Set the same value as the width
+                      width: 420,
+                      height: 160,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      // Change the color as desired
                     ),
                   ),
                 ],
@@ -135,65 +121,61 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
              Positioned(top: 200,
                  left: 90,
                  child: Column(children: [
-
                      Image.asset(image),
-                 SizedBox(height: 12),
+                   const SizedBox(height: 12),
                  Text('   Та $lotteryName сугалаанаас\n$unit ширхэг сугалаа авах гэж байна.',
-                   style: TextStyle(fontSize: 16),)
+                   style: const TextStyle(fontSize: 16),)
                  ],),
-             )
-
-            ],
+             )],
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30), // Adjust vertical padding here
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: ListTile(
                   dense:true,
-                  contentPadding: EdgeInsets.only(left: 0.0, right: 0.0, bottom: 0.0),
-                  title: Text("", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                  leading: Text(
+                  contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0, bottom: 0.0),
+                  title: const Text("", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                  leading: const Text(
                     "Үнэ",
                     style: TextStyle(fontSize: 16, color: Color(0xff666666)),
                   ),
-                  trailing: Text('$price', style: TextStyle(fontSize: 16),),
-
+                  trailing: Text('$price', style: const TextStyle(fontSize: 16),),
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: ListTile(dense:true,
-                  contentPadding: EdgeInsets.only(left: 0.0, right: 0.0, bottom: 0.0),
-                  title: Text("",
+                  contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0, bottom: 0.0),
+                  title: const Text("",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                  leading: Text("Хураамж", style: TextStyle(
+                  leading: const Text("Хураамж", style: TextStyle(
                       fontSize: 16,
                       color: Color(0xff666666)
                   ),),
-                  trailing: Text('$fee', style: TextStyle(fontSize: 16),),
+                  trailing: Text('$fee', style: const TextStyle(fontSize: 16),),
                 ),
               ),
-              Divider(
+              const Divider(
                 color: Colors.black,
                 indent: 30.0,
                 endIndent: 30.0,
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30), // Adjust vertical padding here
+                padding: const EdgeInsets.symmetric(horizontal: 30), // Adjust vertical padding here
                 child: ListTile(
                   dense:true,
-                  contentPadding: EdgeInsets.only(left: 0.0, right: 0.0, bottom: 0.0),
-                  title: Text("", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                  leading: Text(
+                  contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0, bottom: 0.0),
+                  title: const Text("", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                  leading: const Text(
                     "Нийт",
                     style: TextStyle(fontSize: 16, color: Color(0xff666666)),
                   ),
-                  trailing: Text('$total', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                  trailing: Text('$total', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                 ),
               ),
-              SizedBox(height: 250),
+              const SizedBox(height: 250),
               InkWell(
                 onTap: () async{
                   try {
@@ -209,40 +191,28 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
                       'title': lotteryName,
                     });
                     String transactionId = transactionRef.id;
-                   // DateTime transactionDate = transactionRef.;
-                    /*try {
-                      await db.collection('upcomingBills').doc(billId).delete();
-                      print('Document deleted successfully');
-                    } catch (error) {
-                      print('Error deleting document: $error');
-                    }
-                    print('Transaction added to Firestore successfully!');*/
-
-                    Navigator.pushNamed(
-                        context,"/wallet/billDetails/billPayment/confirm",
-                  arguments: {'transactionId': transactionId,
-                  'transactionDate': now,});
+                    // ignore: use_build_context_synchronously
+                    Navigator.pushNamed(context,"/wallet/billDetails/billPayment/confirm",
+                        arguments: {'transactionId': transactionId,
+                        'transactionDate': now,});
                   } catch (error) {
-                    print('Error adding transaction to Firestore: $error');
+                    if (kDebugMode) {
+                      print('Error adding transaction to Firestore: $error');
+                    }
                   }
-
-
-                  //MaterialPageRoute(builder: (context) => RegisterScreen()),
-                  //);
                 },
                 child: Container(
                   width: 300,
                   height: 50,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors:  <Color>[Color(0xffF58742), Color(0xffF58742)],
                     ),
                     borderRadius: BorderRadius.circular(30),
-
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Баталгаажуулах',
                       style: TextStyle(
@@ -251,61 +221,43 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
                         fontSize: 20,
                       ),
                     ),
-
                   ),
                 ),
               ),
             ],
           ),
         ],
-
-
-
       ),
 
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.home_filled,
-                //color: //_selectedIndex == 0
-                // Colors.white
-                //: Colors.grey
-
+              icon: const Icon(Icons.home_filled,
                 size: 30,),
-              onPressed: () =>  Navigator.pushNamed(context,
-                  "/home"),
+                onPressed: () =>  Navigator.pushNamed(context,"/home"),
             ),
             IconButton(
-                icon: Icon(Icons.bar_chart,
+                icon: const Icon(Icons.bar_chart,
                     size: 30),
-                onPressed: () {
-
-                }
+                onPressed: () {}
             ),
             IconButton(
-              icon: Icon(Icons.wallet_outlined,
+              icon: const Icon(Icons.wallet_outlined,
                   size: 30,
                   color: Color(0xffF58742)),
-              onPressed: () {
-                print('Circular button pressed!');
-              },
+                  onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.person
-                  ,
+              icon: const Icon(Icons.person,
                   size: 30),
-              onPressed: () {
-
-                print('Circular button pressed!');
-              },
+                  onPressed: () {},
             ),
           ],
         ),
       ),
-
     );
   }
 }
