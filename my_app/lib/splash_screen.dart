@@ -8,25 +8,25 @@ class SplashScreen extends StatelessWidget {
     callDelay(context);
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: <Color>[Color(0xffF58742), Color(0xffFFD000)]
-            , // Set your gradient colors
+            colors: <Color>[Color(0xffF58742), Color(0xffFFD000)],
           ),
-          //color: Color(0xffF58742)
         ),
-        child:Center(
-          child:  const Text("Сайн уу?",
+        child: const Center(
+          child:  Text("Сайн уу?",
             style: TextStyle(color: Colors.white,
                 fontSize: 45),),
         )
       ),
     );
   }
+  
   Future callDelay(BuildContext context) async  {
     await Future.delayed(const Duration( milliseconds: 5000), () {});
+    // ignore: use_build_context_synchronously
     Navigator.pushNamed(context, "/onboarding");
   }
 }
