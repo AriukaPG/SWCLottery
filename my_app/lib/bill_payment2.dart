@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:my_app/home_screen.dart';
 import 'package:my_app/lottery_info.dart';
 import 'billdetails_screen.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -21,7 +20,6 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
   void initState() {
     // TODO: implement initState
     super.initState();
-    randomString = generateRandomString(8);
   }
   Random random = Random();
   @override
@@ -76,7 +74,7 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
                 children: [
                   const SizedBox(height: 160,),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 0),
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
                     child: Container(
                       width: 420, // Adjust the size as needed
                       height: 128, // Set the same value as the width
@@ -84,7 +82,6 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      // Change the color as desired
                     ),
                   ),
                 ],
@@ -95,20 +92,18 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
                   child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Амжилттай төлөгдлөө",
+                  const Text("Амжилттай төлөгдлөө",
                   style: TextStyle(fontSize: 21, color: Color(0xffF58742),
                       fontWeight: FontWeight.bold),),
-                  Text('$lotteryName',style: TextStyle(fontSize: 15),),
-                  SizedBox(height: 10),
-                  Icon(Icons.check_circle, size: 30, color: Color(0xffF58742),),
-                  //SizedBox(height: 20),
-                ]
-                    ,)),
+                  Text(lotteryName,style: const TextStyle(fontSize: 15),),
+                  const SizedBox(height: 10),
+                  const Icon(Icons.check_circle, size: 30, color: Color(0xffF58742),),
+                ],)),
             ],
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-            child: Row(children: [
+            child: Row(children: const [
               Text(
                 "Гүйлгээний дэлгэрэнгүй",
                 style: TextStyle(fontSize: 18,
@@ -119,22 +114,22 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
               Icon(Icons.keyboard_arrow_up, color: Colors.black,)
             ],),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
             child: Row(children: [
-              Text("Төлбөрийн хэрэгсэл", style: TextStyle(
+              const Text("Төлбөрийн хэрэгсэл", style: TextStyle(
                   fontSize: 16,
                   color: Color(0xff666666)
               ),),
-              SizedBox(width: 123),
-              Text(paymentMethod, style: TextStyle(fontSize: 16),)
+              const SizedBox(width: 123),
+              Text(paymentMethod, style: const TextStyle(fontSize: 16),)
             ],),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Padding(
-            padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
-            child: Row(children: [
+            padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+            child: Row(children: const [
               Text("Төлөв", style: TextStyle(
                   fontSize: 16,
                   color: Color(0xff666666)
@@ -143,45 +138,45 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
               Text("Хийгдсэн", style: TextStyle(fontSize: 16, color: Color(0xffF58742)),)
             ],),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
             child: Row(children: [
-              Text("Цаг", style: TextStyle(
+              const Text("Цаг", style: TextStyle(
                   fontSize: 16,
                   color: Color(0xff666666)
               ),),
-              SizedBox(width: 253),
-              Text("$formattedTime", style: TextStyle(fontSize: 16),),
+              const SizedBox(width: 253),
+              Text(formattedTime, style: const TextStyle(fontSize: 16),),
             ],),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
             child: Row(children: [
-              Text("Огноо", style: TextStyle(
+              const Text("Огноо", style: TextStyle(
                   fontSize: 16,
                   color: Color(0xff666666)
               ),),
-              SizedBox(width: 215),
-              Text("$formattedDate", style: TextStyle(fontSize: 16),)
+              const SizedBox(width: 215),
+              Text(formattedDate, style: const TextStyle(fontSize: 16),)
             ],),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
             child: Row(children: [
-              Text("Гүйлгээний дугаар", style: TextStyle(
+              const Text("Гүйлгээний дугаар", style: TextStyle(
                   fontSize: 16,
                   color: Color(0xff666666)
               ),),
-              SizedBox(width: 5),
-              Text("$transactionId", style: TextStyle(fontSize: 16),),
+              const  SizedBox(width: 5),
+              Text(transactionId, style: const TextStyle(fontSize: 16),),
               IconButton(
-                icon: Icon(Icons.copy, color: Color(0xffF58742)),
+                icon: const Icon(Icons.copy, color: Color(0xffF58742)),
                 onPressed: () {
                   FlutterClipboard.copy(transactionId)
                       .then((_) => ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Copied to clipboard'),
                     ),
                   ));
@@ -189,78 +184,74 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
               ),
             ],),
           ),
-          Divider(
+          const Divider(
             color: Colors.black,
             indent: 30.0,
             endIndent: 30.0,
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
             child: Row(children: [
-              Text(
+              const Text(
                 "Үнэ",
                 style: TextStyle(fontSize: 16, color: Color(0xff666666)),
               ),
-              SizedBox(width: 285),
-              Text('$price', style: TextStyle(fontSize: 16),),
+              const SizedBox(width: 285),
+              Text('$price', style: const TextStyle(fontSize: 16),),
             ],),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
             child: Row(children: [
-              Text("Хураамж", style: TextStyle(
+              const Text("Хураамж", style: TextStyle(
                   fontSize: 16,
                   color: Color(0xff666666)
               ),),
-              SizedBox(width: 245),
-              Text('-  $fee', style: TextStyle(fontSize: 16),),
+              const SizedBox(width: 245),
+              Text('-  $fee', style: const TextStyle(fontSize: 16),),
             ],),
           ),
-          SizedBox(height: 12),
-          Divider(
+          const SizedBox(height: 12),
+          const Divider(
             color: Colors.black,
             indent: 30.0,
             endIndent: 30.0,
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
             child: Row(children: [
-              Text(
+              const Text(
                 "Нийт",
                 style: TextStyle(fontSize: 16, color: Color(0xff666666)),
               ),
-              SizedBox(width: 275),
-              Text('$total', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+              const SizedBox(width: 275),
+              Text('$total', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
             ],),
           ),
-
           QrImageView(
             data: randomString,
             version: QrVersions.auto,
             size: 120.0,
           ),
-              SizedBox(height: 10),
+          const SizedBox(height: 10),
               InkWell(
                 onTap: () {
                   Navigator.pushNamed(
                         context,'/wallet/billDetails/billPayment/confirm/seeTicket');
-                    //MaterialPageRoute(builder: (context) => RegisterScreen()),
-                    //);*/
                 },
                 child: Container(
                   width: 260,
                   height: 50,
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Color(0xffF58742)
+                        color: const Color(0xffF58742)
                     ),
                     borderRadius: BorderRadius.circular(30),
-
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       'Сугалааны дугаар харах',
                       style: TextStyle(
@@ -269,68 +260,41 @@ class _BillPaymentScreen2State extends State<BillPaymentScreen2>{
                         fontSize: 20,
                       ),
                     ),
-
                   ),
                 ),
               ),
             ],
-
-
-
-
       ),
 
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.home_filled,
-                //color: //_selectedIndex == 0
-                // Colors.white
-                //: Colors.grey
-
-                size: 30,),
-              onPressed: () =>  Navigator.pushNamed(context,
-                  "/home"),
+              icon: const Icon(Icons.home_filled,
+                    size: 30,),
+                    onPressed: () =>  Navigator.pushNamed(context,"/home"),
             ),
             IconButton(
-                icon: Icon(Icons.bar_chart,
+                icon: const Icon(Icons.bar_chart,
                     size: 30),
-                onPressed: () {
-
-                }
+                    onPressed: () {}
             ),
             IconButton(
-              icon: Icon(Icons.wallet_outlined,
+              icon: const Icon(Icons.wallet_outlined,
                   size: 30,
                   color: Color(0xff3e7c78)),
-              onPressed: () {
-                print('Circular button pressed!');
-              },
+                  onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.person
-                  ,
+              icon: const Icon(Icons.person,
                   size: 30),
-              onPressed: () {
-
-                print('Circular button pressed!');
-              },
+                  onPressed: () {},
             ),
           ],
         ),
       ),
-
     );
   }
-}
-String generateRandomString(int length) {
-  const charset = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  Random random = Random();
-  return String.fromCharCodes(Iterable.generate(
-    length,
-        (_) => charset.codeUnitAt(random.nextInt(charset.length)),
-  ));
 }
