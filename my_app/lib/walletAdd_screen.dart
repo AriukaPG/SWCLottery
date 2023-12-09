@@ -16,7 +16,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
   bool secondContainerSelected = false;
   bool thirdContainerSelected = false;
 
- bool button2=true;
+  bool button2=true;
   bool isLightTheme = false;
   String cardNumber = '';
   String expiryDate = '';
@@ -37,8 +37,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
           children: [
             Stack(
               children: [
-                Image.asset('assets/images/image2.png'),
-                Image.asset('assets/images/hee.png'),
+                Image.asset('assets/images/background.png'),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 95, 0, 0),
                   child: Row(
@@ -48,7 +47,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
                           color: Colors.white,
                           size: 30,
                         ),
-                        onTap: () => Navigator.pushNamed(context, '/wallet'),
+                        onTap: () => Navigator.pushNamed(context, '/home'),
                       )
                     ],
                   ),
@@ -70,12 +69,12 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
                 ),
                 Positioned(top: 99,
                   right: 33,
-                  child: Image.asset('assets/images/Ellipse6.png', width: 7,height: 7,),
+                  child: Image.asset('assets/images/circle.png', width: 7,height: 7,),
                 ),
                 const Positioned(top: 95,
                   left: 110,child: Text("Түрийвч цэнэглэх",
-                  style: TextStyle(color: Colors.white,
-                      fontSize: 20),),
+                    style: TextStyle(color: Colors.white,
+                        fontSize: 20),),
                 ),
                 Column(
                   children: [
@@ -150,7 +149,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
                         child: Center(
                           child: InkWell(onTap: () {
                             Navigator.pushNamed(context, "/home");
-                            },
+                          },
                             child: const Text("Аккаунт",
                                 style: TextStyle(color: Color(0xff666666),
                                     fontWeight: FontWeight.bold)),
@@ -204,7 +203,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
                       cvvCode = cvvCode;
                       isCvvFocused = isCvvFocused;
                     });
-                    },
+                  },
                   obscureCvv: true,
                   obscureNumber: true,
                   isHolderNameVisible: true,
@@ -217,16 +216,16 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
 
                   cardNumberValidator: (String? cardNumber) {
                     return null;
-                    },
+                  },
                   expiryDateValidator: (String? expiryDate) {
                     return null;
-                    },
+                  },
                   cvvValidator: (String? cvv) {
                     return null;
-                    },
+                  },
                   cardHolderValidator: (String? cardHolderName) {
                     return null;
-                    },
+                  },
                   onFormComplete: () {},
                   autovalidateMode: AutovalidateMode.always,
                   disableCardNumberAutoFillHints: false,
@@ -319,7 +318,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
                           thirdContainerSelected= false;
                         }
                       });
-                      },
+                    },
                     child: Container(
                       width: 344,
                       height: 100,
@@ -380,7 +379,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
                           thirdContainerSelected = false;
                         }
                       });
-                      },
+                    },
                     child: Container(
                       width: 344,
                       height: 100,
@@ -440,63 +439,63 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
                           secondContainerSelected = false;
                         }
                       });
-                      }, 
+                    },
                     child: Container(
-                        width: 344, 
-                        height: 100, 
-                        margin: const EdgeInsets.symmetric(horizontal: 25.0), 
+                        width: 344,
+                        height: 100,
+                        margin: const EdgeInsets.symmetric(horizontal: 25.0),
                         decoration: BoxDecoration(
-                          color: thirdContainerSelected? const Color(0xffEDF4F3) 
-                              : Colors.white, 
+                          color: thirdContainerSelected? const Color(0xffEDF4F3)
+                              : Colors.white,
                           borderRadius: BorderRadius.circular(20.0),
-                        ), 
+                        ),
                         child: Center(
                           child: ListTile(
-                            title: Text('Paypal', style: 
-                            TextStyle(color:  thirdContainerSelected 
-                                ? const Color(0xff438883) 
-                                : const Color(0xff888888), 
-                                fontWeight: FontWeight.bold)), 
-                            subtitle: Text('Connect you paypal account', style: 
+                            title: Text('Paypal', style:
+                            TextStyle(color:  thirdContainerSelected
+                                ? const Color(0xff438883)
+                                : const Color(0xff888888),
+                                fontWeight: FontWeight.bold)),
+                            subtitle: Text('Connect you paypal account', style:
                             TextStyle(
-                                color: thirdContainerSelected 
-                                    ? const Color(0xff438883) 
+                                color: thirdContainerSelected
+                                    ? const Color(0xff438883)
                                     : const Color(0xff888888)
-                            )), 
+                            )),
                             leading: Container(
-                                width: 60, 
-                                height: 60, 
+                                width: 60,
+                                height: 60,
                                 decoration: const BoxDecoration(
-                                  shape: BoxShape.circle, 
+                                  shape: BoxShape.circle,
                                   color: Colors.white,
-                                ), 
+                                ),
                                 child: const Icon(Icons.paypal)
-                            ), 
-                            trailing: thirdContainerSelected 
-                                ? const Icon(Icons.check_circle, color: Color(0xff438883)) 
+                            ),
+                            trailing: thirdContainerSelected
+                                ? const Icon(Icons.check_circle, color: Color(0xff438883))
                                 : const Text(''),
                           ),
                         )
                     ),
                   ),
-                  const SizedBox(height: 60), 
+                  const SizedBox(height: 60),
                   InkWell(
-                    onTap: () {}, 
+                    onTap: () {},
                     child: Container(
-                      width: 260, 
-                      height: 50, 
+                      width: 260,
+                      height: 50,
                       decoration: BoxDecoration(
                         border: Border.all(
                             color: const Color(0xfff69457)
-                        ), 
+                        ),
                         borderRadius: BorderRadius.circular(30),
-                      ), 
+                      ),
                       child: const Center(
                         child: Text(
-                          'Дараах', 
+                          'Дараах',
                           style: TextStyle(
-                            color: Color(0xfff69457), 
-                            fontWeight: FontWeight.bold, 
+                            color: Color(0xfff69457),
+                            fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
                         ),
@@ -507,7 +506,7 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
               )
           ],
         ),
-      ), 
+      ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Row(
@@ -519,20 +518,24 @@ class _WalletAddScreenState extends State<WalletAddScreen>{
               onPressed: () =>  Navigator.pushNamed(context, "/home"),
             ),
             IconButton(
-              icon: const Icon(Icons.bar_chart,
+              icon: const Icon(Icons.local_activity_outlined,
                   size: 30),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, "/lottery");
+              },
             ),
             IconButton(
               icon: const Icon(Icons.wallet_outlined,
                   size: 30,
-                  color: Color(0xff3e7c78)),
+                  color: Color(0xffF58742)),
               onPressed: () {},
             ),
             IconButton(
               icon: const Icon(Icons.person,
                   size: 30),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, "/account");
+              },
             ),
           ],
         ),

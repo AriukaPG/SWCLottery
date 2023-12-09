@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'lottery_info.dart';
 
@@ -6,6 +7,7 @@ double fee=0;
 double total=0;
 String paymentMethod='';
 int unit=0;
+int length=0;
 
 class BillDetailsScreen extends StatefulWidget {
 
@@ -25,13 +27,15 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
   final TextEditingController _unitController = TextEditingController();
   int selectedOption=1;
 
-  void _updateTotal() {
-    setState(() {
+  void _updateTotal() async{
+    setState((){
       int l1 = int.tryParse(_unitController.text) ?? 0;
-      price = lotteryPrice*l1;
+      price = lotteryPrice * l1;
       fee = price * 0.1;
       total = fee + price;
-      unit=l1;
+      unit = l1;
+     check();
+
     });
   }
 
@@ -43,8 +47,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
         children: [
           Stack(
             children: [
-              Image.asset('assets/images/image2.png'),
-              Image.asset('assets/images/hee.png'),
+              Image.asset('assets/images/background.png'),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 95, 0, 0),
                 child: Row(
@@ -61,8 +64,8 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
               ),
               const Positioned(top: 95,
                 left: 150,child: Text("Bill Details",
-                style: TextStyle(color: Colors.white,
-                    fontSize: 20),),
+                  style: TextStyle(color: Colors.white,
+                      fontSize: 20),),
               ),
               const Positioned(top: 96,
                 right: 24,
@@ -90,50 +93,50 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
               Padding(
                 padding: const EdgeInsets.fromLTRB(30, 180, 0, 0),
                 child: ListTile(
-                    title: Text(lotteryName,
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                    subtitle: Text(date),
-                    leading: Container(
-                      width: 50,
-                      height: 50,
-                      decoration:
-                      BoxDecoration(color: const Color(0x0fffffff),
-                          borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Center(
-                          child: Image.asset(image)
-                      ),
+                  title: Text(lotteryName,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                  subtitle: Text(date),
+                  leading: Container(
+                    width: 50,
+                    height: 50,
+                    decoration:
+                    BoxDecoration(color: const Color(0x0fffffff),
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Center(
+                        child: Image.asset(image)
                     ),
                   ),
+                ),
               ),
             ],
           ),
-        InkWell(
-                  onTap: (){
-                    setState(() {
-                    });
-                  },
-                  child:Container(
-                    width: 350,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(color:const Color(0xffDDDDDD)),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      child: TextField(
-                        controller: _unitController,
-                        style: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 15),
-                        decoration: const InputDecoration(border: InputBorder.none,
-                            hintText: 'Та хэдэн ширхэг сугалаа авах вэ?'),),
-                    ),
-                  )
-              ),
-         Column(
-           mainAxisAlignment: MainAxisAlignment.start,
+          InkWell(
+              onTap: (){
+                setState(() {
+                });
+              },
+              child:Container(
+                width: 350,
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(color:const Color(0xffDDDDDD)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: TextField(
+                    controller: _unitController,
+                    style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15),
+                    decoration: const InputDecoration(border: InputBorder.none,
+                        hintText: 'Та хэдэн ширхэг сугалаа авах вэ?'),),
+                ),
+              )
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30), // Adjust vertical padding here
@@ -153,7 +156,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                 child: ListTile(dense:true,
                   contentPadding: const EdgeInsets.only(left: 0.0, right: 0.0, bottom: 0.0),
                   title: const Text("",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
                   leading: const Text("Хураамж", style: TextStyle(
                       fontSize: 16,
                       color: Color(0xff666666)
@@ -162,7 +165,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                 ),
               ),
               const Divider(
-                  color: Colors.black,
+                color: Colors.black,
                 indent: 30.0,
                 endIndent: 30.0,
               ),
@@ -230,7 +233,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                   ),
                   child: Center(
                     child: ListTile(
-                      title: Text('Paypal', style: TextStyle(
+                      title: Text('Дансны үлдэгдэл', style: TextStyle(
                           color: selectedOption==2?const Color(0xffF58742):const Color(0xff888888),fontWeight: FontWeight.bold
                       ),),
                       leading: Container(
@@ -240,12 +243,12 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                             shape: BoxShape.circle,
                             color: Colors.white,
                           ),
-                          child: Icon(Icons.paypal, color:selectedOption==2?const Color(0xffF58742):const Color(0xff888888) ,)
+                          child: Icon(Icons.account_balance_wallet, color:selectedOption==2?const Color(0xffF58742):const Color(0xff888888) ,)
                       ),
                       trailing:Radio<int>(
                         value: 2,
                         groupValue: selectedOption,
-                        activeColor: selectedOption==2?const Color(0xffF58742):const Color(0xff888888), 
+                        activeColor: selectedOption==2?const Color(0xffF58742):const Color(0xff888888),
                         fillColor: MaterialStateProperty.all(selectedOption==2?const Color(0xffF58742):const Color(0xff888888)), // Change the fill color when selected
                         splashRadius: 20, // Change the splash radius when clicked
                         onChanged: (int? value) {
@@ -262,12 +265,23 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
                   if (selectedOption == 1) {
                     paymentMethod = 'Дебит карт';
                   } else if (selectedOption == 2) {
-                    paymentMethod = 'PayPal';
+                    paymentMethod = 'Дансны үлдэгдэл';
                   } else {
                     paymentMethod = 'Unknown Payment Method';
                   }
+                  if(length>=unit){
                   Navigator.pushNamed(
                       context,"/wallet/billDetails/billPayment" );
+                  }
+                  else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            'Уучлаарай, $length ширхэг сугалаа байна'),
+                        duration: const Duration(seconds: 3),
+                      ),
+                    );
+                  }
                 },
                 child: Container(
                   width: 300,
@@ -305,24 +319,64 @@ class _BillDetailsScreenState extends State<BillDetailsScreen>{
               onPressed: () =>  Navigator.pushNamed(context, "/home"),
             ),
             IconButton(
-              icon: const Icon(Icons.bar_chart,
-                  size: 30),
-              onPressed: () {}
+                icon: const Icon(Icons.local_activity_outlined,
+                    size: 30,
+                    color: Color(0xffF58742)),
+                onPressed: () {}
             ),
             IconButton(
               icon: const Icon(Icons.wallet_outlined,
-                  size: 30,
-                  color: Color(0xff3e7c78)),
-              onPressed: () {},
+                  size: 30
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, "/wallet");
+              },
             ),
             IconButton(
               icon: const Icon(Icons.person,
                   size: 30),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, "/account");
+              },
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> check() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('lotteries')
+        .doc(lotteryId)
+        .get();
+    if (snapshot.exists) {
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+      if (data.containsKey('ticketNumbers') &&
+          data['ticketNumbers'] is List) {
+        List<dynamic> ticketNumbers = data['ticketNumbers'];
+        length = ticketNumbers.length;
+        print(length);
+        if (length < unit) {
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Уучлаарай, $length ширхэг сугалаа байна'),
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        }
+
+        if(length==0){
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Уучлаарай, сугалааны тасалбар дууссан байна'),
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+      }
+    }
   }
 }

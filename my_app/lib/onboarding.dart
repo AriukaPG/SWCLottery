@@ -18,10 +18,10 @@ class _OnBoarding extends State<OnBoarding> {
               height: 450.0,
               width: 415.0,
               decoration: const BoxDecoration(
-              borderRadius: BorderRadius.vertical(bottom: Radius.elliptical(350, 50)), 
+                borderRadius: BorderRadius.vertical(bottom: Radius.elliptical(350, 50)),
                 color: Color(0xffF58742),
-              ), 
-              child: Image.asset('assets/images/login.png'),
+              ),
+              child: Image.asset('assets/images/OnBoarding.png'),
             )
           ],),
           const SizedBox(height: 50),
@@ -33,54 +33,54 @@ class _OnBoarding extends State<OnBoarding> {
           ),
           const SizedBox(height: 30),
           const Text(
-            'Сугалааны ертөнцэд тавтай морил!',
+            'Сугалааны ертөнцөд тавтай морил!',
             textAlign:  TextAlign.center,
             style: TextStyle(color:  Color(0xff464444), fontSize: 18),
           ),
           const SizedBox(height: 100),
           Row(
             children: [
-              const SizedBox(width: 30), 
+              const SizedBox(width: 30),
               InkWell(
                 onTap: () {
                   Navigator.pushNamed(context,"/login");
-                  }, 
+                },
                 child: Container(
-                  width: 180, 
-                  height: 50, 
+                  width: 180,
+                  height: 50,
                   decoration: BoxDecoration(
-                    color: const Color(0xffF58742), 
+                    color: const Color(0xffF58742),
                     borderRadius: BorderRadius.circular(0),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Sign In',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Sign In',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ), 
               InkWell(
                 onTap: () {
                   Navigator.pushNamed(context,"/register");
-                  },
+                },
                 child: Container(
-                  width: 180, 
-                  height: 50, 
+                  width: 180,
+                  height: 50,
                   decoration: BoxDecoration(
-                    color: const Color(0xffD2D2D2), 
+                    color: const Color(0xffD2D2D2),
                     borderRadius: BorderRadius.circular(0),
-                  ), 
+                  ),
                   child: const Center(
                     child: Text(
-                      'Register', 
+                      'Register',
                       style: TextStyle(
-                        color: Color(0xff545151), 
-                        fontWeight: FontWeight.bold, 
+                        color: Color(0xff545151),
+                        fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
                     ),

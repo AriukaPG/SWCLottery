@@ -6,10 +6,11 @@ import 'billdetails_screen.dart';
 import 'lottery_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-int length=0;
+List<int> randomTicketNumbers = [];
 Random random=Random();
 int randomIndex=0;
 int randomTicketNumber=0;
+String ticketDoc="";
 
 class BillPaymentScreen extends StatefulWidget {
   const BillPaymentScreen({Key? key}) : super(key: key);
@@ -24,47 +25,85 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
     // TODO: implement initState
     super.initState();
   }
+  Future<void> getTicketNumbers(String transactionId) async {
+    try {
+      for (int i = 0; i < unit; i++) {
+        DocumentSnapshot snapshot = await FirebaseFirestore.instance
+            .collection('lotteries')
+            .doc(lotteryId)
+            .get();
 
-  bool showDefaultListTiles = true;
-  bool button1=true;
-  int selectedOption=1;
-  Future<void> getTicketNumbersLength() async {
-   for(int i=0;i<unit;i++) {
-     try {
-       DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection(
-           'lotteries').doc(lotteryId).get();
-       if (snapshot.exists) {
-         Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        if (snapshot.exists) {
+          Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
 
-         if (data.containsKey('ticketNumbers') &&
-             data['ticketNumbers'] is List) {
-           List<dynamic> ticketNumbers = data['ticketNumbers'];
-           length = ticketNumbers.length - 1;
-           randomIndex = random.nextInt(length);
-           if (randomIndex >= 0 && randomIndex < ticketNumbers.length) {
-             randomTicketNumber = ticketNumbers[randomIndex];
-             String stringTotal= randomTicketNumber.toString();
-             DocumentReference ticketRef = await db.collection('tickets').add({
-               'userId': user,
-               'lotteryId': lotteryId,
-                'lotteryName': lotteryName
-             });
-             await ticketRef.update({
-               'buyedTickets': FieldValue.arrayUnion([stringTotal]),
-             });
-             await db.collection('lotteries').doc(lotteryId).update({
-               'ticketNumbers': FieldValue.arrayRemove([randomTicketNumber]),
-             });
-           }
-         }
-       }
-     }
-     catch (e) {
-       if (kDebugMode) {
-         print('Error fetching document data: $e');
-       }
-     }
-   }
+          if (data.containsKey('ticketNumbers') && data['ticketNumbers'] is List) {
+            List<dynamic> ticketNumbers = data['ticketNumbers'];
+            length = ticketNumbers.length;
+
+            if (length > 0) {
+              int randomIndex = (length == 1) ? 0 : random.nextInt(length - 1);
+
+              randomTicketNumber = ticketNumbers.removeAt(randomIndex);
+              randomTicketNumbers.add(randomTicketNumber);
+
+              await updateLotteryTicketNumbers();
+            }
+          }
+        } else {
+          // Document not found
+        }
+      }
+
+      if (randomTicketNumbers.isNotEmpty) {
+        await addTicketToFirestore(transactionId);
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error fetching document data: $e');
+      }
+    }
+  }
+
+  Future<void> updateLotteryTicketNumbers() async {
+    await FirebaseFirestore.instance.collection('lotteries').doc(lotteryId).update({
+      'ticketNumbers': FieldValue.arrayRemove(randomTicketNumbers),
+    });
+  }
+
+  Future<void> addTicketToFirestore(String transactionId) async {
+    try {
+      DocumentReference ticketRef = await FirebaseFirestore.instance.collection('tickets').add({
+        'userId': user,
+        'lotteryId': lotteryId,
+        'lotteryName': lotteryName,
+        'boughtTickets': randomTicketNumbers,
+        'transactionId': transactionId,
+      });
+
+      setState(() {
+        ticketDoc = ticketRef.id;
+      });
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error updating Firestore: $e');
+      }
+    }
+  }
+
+  Future<void> addValueToArray() async {
+    try {
+
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user)
+          .update({
+        'tickets': FieldValue.arrayUnion([...randomTicketNumbers])
+      });
+
+      print('Value added to the array successfully.');
+    } catch (error) {
+      print('Error adding value to the array: $error');
+    }
   }
 
   @override
@@ -74,8 +113,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
         children: [
           Stack(
             children: [
-              Image.asset('assets/images/image2.png'),
-              Image.asset('assets/images/hee.png'),
+              Image.asset('assets/images/background.png'),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 95, 0, 0),
                 child: Row(
@@ -118,15 +156,15 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
                   ),
                 ],
               ),
-             Positioned(top: 200,
-                 left: 90,
-                 child: Column(children: [
-                     Image.asset(image),
-                   const SizedBox(height: 12),
-                 Text('   Та $lotteryName сугалаанаас\n$unit ширхэг сугалаа авах гэж байна.',
-                   style: const TextStyle(fontSize: 16),)
-                 ],),
-             )],
+              Positioned(top: 170,
+                left: 90,
+                child: Column(children: [
+                  Image.asset(image, width: 80, height: 80,),
+                  const SizedBox(height: 12),
+                  Text('   Та $lotteryName сугалаанаас\n$unit ширхэг сугалаа авах гэж байна.',
+                    style: const TextStyle(fontSize: 16),)
+                ],),
+              )],
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -179,7 +217,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
               InkWell(
                 onTap: () async{
                   try {
-                    getTicketNumbersLength();
+                    randomTicketNumbers=[];
                     DateTime now = DateTime.now();
                     Timestamp timestamp = Timestamp.fromDate(now);
                     String stringTotal= total.toString();
@@ -189,12 +227,15 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
                       'amount': stringTotal,
                       'date': timestamp,
                       'title': lotteryName,
+                      'paymentMethod': paymentMethod
                     });
                     String transactionId = transactionRef.id;
+                    getTicketNumbers(transactionId);
+                    addValueToArray();
                     // ignore: use_build_context_synchronously
                     Navigator.pushNamed(context,"/wallet/billDetails/billPayment/confirm",
                         arguments: {'transactionId': transactionId,
-                        'transactionDate': now,});
+                          'transactionDate': now,});
                   } catch (error) {
                     if (kDebugMode) {
                       print('Error adding transaction to Firestore: $error');
@@ -237,23 +278,28 @@ class _BillPaymentScreenState extends State<BillPaymentScreen>{
             IconButton(
               icon: const Icon(Icons.home_filled,
                 size: 30,),
-                onPressed: () =>  Navigator.pushNamed(context,"/home"),
+              onPressed: () =>  Navigator.pushNamed(context,"/home"),
             ),
             IconButton(
-                icon: const Icon(Icons.bar_chart,
-                    size: 30),
+                icon: const Icon(Icons.local_activity_outlined,
+                    size: 30,
+                    color: Color(0xffF58742)),
                 onPressed: () {}
             ),
             IconButton(
               icon: const Icon(Icons.wallet_outlined,
-                  size: 30,
-                  color: Color(0xffF58742)),
-                  onPressed: () {},
+                  size: 30
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, "/wallet");
+              },
             ),
             IconButton(
               icon: const Icon(Icons.person,
                   size: 30),
-                  onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, "/account");
+              },
             ),
           ],
         ),
