@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'home_screen.dart';
 
-
 class MyAccountScreen extends StatefulWidget {
 
   const MyAccountScreen({Key? key}) : super(key: key);
@@ -13,20 +12,24 @@ class MyAccountScreen extends StatefulWidget {
 }
 
 class _MyAccountScreenState extends State<MyAccountScreen>{
+
   @override
   void initState() {
     super.initState();
   }
+
   Future<void> _signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
-      // Navigate to the home screen after successful sign-out
+      // ignore: use_build_context_synchronously
       Navigator.pushNamed(context, '/login');
     } catch (e) {
-      print('Error signing out: $e');
-      // Handle error, if any
+      if (kDebugMode) {
+        print('Error signing out: $e');
+      }
     }
   }
+  
   @override
   Widget build(BuildContext context){
     String firstAlphabet = name.isNotEmpty ? name[0] : '';
@@ -64,9 +67,10 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
                         color: Colors.white,
                         size: 25,
                       ),
-                    )),
+                    )
+                ),
                 Positioned(top: 99,
-                  right: 33,
+                  right: 33, 
                   child: Image.asset('assets/images/circle.png', width: 7,height: 7,),
                 ),
                 const Positioned(
@@ -78,108 +82,105 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(140, 200, 0, 0),
-
-                      child: Container(
-                      width: 130,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        color: Color(0xff429EBD),
+                  child: Container(
+                    width: 130,
+                    height: 130,
+                    decoration: BoxDecoration(
+                        color: const Color(0xff429EBD),
                         borderRadius: BorderRadius.circular(130)
-                      ),
-                        child: Center(child: Text(firstAlphabet, style: TextStyle(
-                          fontSize: 70,
-                          color: Colors.white
-                        ),)),
                     ),
+                    child: Center(child: Text(firstAlphabet, style: const TextStyle(
+                        fontSize: 70,
+                        color: Colors.white
+                    ),)),
+                  ),
                 ),
-
               ],
             ),
-            SizedBox(height: 20),
-          Center(
-            child: Text(
-              name, style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 22
+            const SizedBox(height: 20),
+            Center(
+              child: Text(
+                name, style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22
+              ),
+              ),
             ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  const InkWell(
+                    child: ListTile(
+                      title: Text("Хувийн мэдээлэл",
+                        style: TextStyle(fontSize: 20),),
+                      leading: Icon(Icons.person,
+                        size: 30,
+                        color: Color(0xff666666),),
+                      trailing: Icon(Icons.chevron_right, size: 30,
+                          color:Color(0xff666666)),
+                    ),
+                  ),
+                  const InkWell(
+                    child:ListTile(
+                      title: Text("Сугалаа",
+                        style: TextStyle(fontSize: 20),),
+                      leading: Icon(Icons.local_activity_outlined,
+                        size: 30,
+                        color: Color(0xff666666),),
+                      trailing: Icon(Icons.chevron_right, size: 30,
+                          color:Color(0xff666666)),
+                    ),
+                  ),
+                  const InkWell(
+                    child:ListTile(
+                      title: Text("Найзаа урих",
+                        style: TextStyle(fontSize: 20),),
+                      leading: Icon(Icons.person_add_rounded,
+                        size: 30,
+                        color: Color(0xff666666),),
+                      trailing: Icon(Icons.chevron_right, size: 30,
+                          color:Color(0xff666666)),
+                    ),
+                  ),
+                  const InkWell(
+                    child:ListTile(
+                      title: Text("Тохиргоо",
+                        style: TextStyle(fontSize: 20),),
+                      leading: Icon(Icons.settings,
+                        size: 30,
+                        color: Color(0xff666666),),
+                      trailing: Icon(Icons.chevron_right, size: 30,
+                          color:Color(0xff666666)),
+                    ),
+                  ),
+                  const InkWell(
+                    child:ListTile(
+                      title: Text("Тусламж",
+                        style: TextStyle(fontSize: 20),),
+                      leading: Icon(Icons.help,
+                        size: 30,
+                        color: Color(0xff666666),),
+                      trailing: Icon(Icons.chevron_right, size: 30,
+                          color:Color(0xff666666)),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: _signOut,
+                    child:const ListTile(
+                      title: Text("Гарах",
+                        style: TextStyle(fontSize: 20),),
+                      leading: Icon(Icons.login,
+                        size: 30,
+                        color: Color(0xff666666),),
+                      trailing: Icon(Icons.chevron_right, size: 30,
+                          color:Color(0xff666666)),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                InkWell(
-                  child: ListTile(
-                  title: Text("Хувийн мэдээлэл",
-                    style: TextStyle(fontSize: 20),),
-                  leading: Icon(Icons.person,
-                    size: 30,
-                    color: Color(0xff666666),),
-                    trailing: Icon(Icons.chevron_right, size: 30,
-                    color:Color(0xff666666)),
-                ),
-                ),
-                InkWell(
-                  child:ListTile(
-                    title: Text("Сугалаа",
-                      style: TextStyle(fontSize: 20),),
-                    leading: Icon(Icons.local_activity_outlined,
-                      size: 30,
-                      color: Color(0xff666666),),
-                    trailing: Icon(Icons.chevron_right, size: 30,
-                        color:Color(0xff666666)),
-                  ),
-                ),
-                InkWell(
-                  child:ListTile(
-                    title: Text("Найзаа урих",
-                      style: TextStyle(fontSize: 20),),
-                    leading: Icon(Icons.person_add_rounded,
-                      size: 30,
-                      color: Color(0xff666666),),
-                    trailing: Icon(Icons.chevron_right, size: 30,
-                        color:Color(0xff666666)),
-                  ),
-                ),
-                InkWell(
-                  child:ListTile(
-                    title: Text("Тохиргоо",
-                      style: TextStyle(fontSize: 20),),
-                    leading: Icon(Icons.settings,
-                      size: 30,
-                      color: Color(0xff666666),),
-                    trailing: Icon(Icons.chevron_right, size: 30,
-                        color:Color(0xff666666)),
-                  ),
-                ),
-                InkWell(
-                  child:ListTile(
-                  title: Text("Тусламж",
-                    style: TextStyle(fontSize: 20),),
-                  leading: Icon(Icons.help,
-                    size: 30,
-                    color: Color(0xff666666),),
-                    trailing: Icon(Icons.chevron_right, size: 30,
-                        color:Color(0xff666666)),
-                ),
-                ),
-                InkWell(
-                  onTap: _signOut,
-                  child:ListTile(
-                    title: Text("Гарах",
-                      style: TextStyle(fontSize: 20),),
-                    leading: Icon(Icons.login,
-                      size: 30,
-                      color: Color(0xff666666),),
-                    trailing: Icon(Icons.chevron_right, size: 30,
-                        color:Color(0xff666666)),
-                  ),
-                ),
-
-              ],
-            ),
-          ),
           ],
         ),
       ),
@@ -191,12 +192,12 @@ class _MyAccountScreenState extends State<MyAccountScreen>{
           children: <Widget>[
             IconButton(
               icon: const Icon(Icons.home_filled,
-                size: 30,),
+                size: 30,), 
               onPressed: () =>  Navigator.pushNamed(context, "/home"),
             ),
             IconButton(
                 icon: const Icon(Icons.local_activity_outlined,
-                  size: 30),
+                    size: 30),
                 onPressed: () {
                   Navigator.pushNamed(context, "/lottery");
                 }
